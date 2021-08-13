@@ -1,0 +1,143 @@
+<div class="container">
+  <form>
+
+  <div class="form-row w-50">
+    <div class="form-group col-md-4">
+      <label for="idInput">Patient Id</label>
+      <input [(ngModel)]="patient.id" name="idInput" id="idInput" type="text" class="form-control" >
+    </div>
+
+    <div class="form-group col-md-4">
+      <label for="nameInput">Name</label>
+      <input id="nameInput" type="text" [(ngModel)]="patient.name" name="nameInput" class="form-control" >
+    </div>
+    <div class="form-group col-md-4">
+      <label for="nameInput">Sex</label>
+
+      <select [(ngModel)]="patient.sex" class="form-select" name="sexInput" id="sexInput">
+        <option *ngFor="let n of sexList" value="{{n}}">{{n}}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="birthdayInput">Birthday</label>
+      <input [(ngModel)]="patient.birthday" id="birthdayInput" name="birthdayInput" type="date" class="form-control">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="departmentsInput">Department</label>
+
+      <select [(ngModel)]="patient.departamentId" class="form-select" name="departamentInput" id="departmentsInput">
+        <option *ngFor="let n of departments" value="{{n.id}}">{{n.name}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <h3>Diagnoses</h3>
+        <div *ngFor="let diagnosis of patient.diagnoses; let idx = index" class="row mb-2">
+          <div class="col-md-1">
+            <input [(ngModel)]="diagnosis.isActive" name="diagnosisCheck" type="checkbox" id="diagnosisCheck" (change)="DoCalc()" checked>
+          </div>
+          <div class="col-md-9">
+            <div class="row">
+
+              <div class="col-md-4">
+                {{diagnosis.name}}
+              </div>
+
+              <div class="col-md-8">
+                <div class="row" *ngIf="diagnosis.isActive == true">
+                  <div class="col" *ngFor="let flag of diagnosis.flags">
+                    {{flag}}
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12" *ngIf="diagnosis.isActive == true">
+                <small>{{diagnosis.description}}</small>
+              </div>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <button style="float: right" type="button" class="btn btn-danger" (click)="patient.diagnoses.splice(idx, 1)">X</button>
+          </div>
+        </div>
+
+        <input class="form-control" type="text" #newDiagnosis (focusout)="AddDiagnosis($event)" placeholder="Add New">
+    </div>
+
+
+    <div class="col-md-6">
+      <h3>Procedures</h3>
+      <div *ngFor="let procedure of patient.procedures; let idx = index" class="row mb-2" >
+        <div class="col-md-1">
+          <input [(ngModel)]="procedure.isActive" type="checkbox" name="procedureCheck" id="procedureCheck" (change)="DoCalc()" checked>
+        </div>
+        <div class="col-md-9">
+          <div class="row">
+
+            <div class="col-md-4">
+              {{procedure.name}}
+            </div>
+
+            <div class="col-md-8">
+              <div class="row" *ngIf="procedure.isActive == true">
+                <div class="col" *ngFor="let flag of procedure.flags">
+                  {{flag}}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="procedure.isActive == true">
+              <small>{{procedure.description}}</small>
+            </div>
+
+          </div>
+        </div>
+        <div class="col-md-2">
+          <button style="float: right" type="button" class="btn btn-danger" (click)="patient.procedures.splice(idx, 1)">X</button>
+        </div>
+      </div>
+
+      <input class="form-control" type="text" #newProcedure (focusout)="AddProcedure($event)" placeholder="Add New">
+    </div>
+  </div>
+
+  </form>
+
+  <div class="w-50 mt-4">
+    <div class="row">
+      <div class="col">
+        <p>MDC</p>
+      </div>
+      <div class="col">
+        <p class="font-weight-bold">{{patientResult.mdc}}</p>
+
+      </div>
+      <div class="col">
+        <p class="font-weight-bold">{{patientResult.mdcDescription}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <p>DRG</p>
+      </div>
+      <div class="col">
+        <p class="font-weight-bold">{{patientResult.drg}}</p>
+      </div>
+      <div class="col">
+        <p class="font-weight-bold">{{patientResult.drgDescription}}</p>
+      </div>
+    </div>
+    <div class="row">
+    <div class="col">
+      <p>Entgelt</p>
+    </div>
+    <div class="col">
+      <p class="font-weight-bold">{{patientResult.entgelt}}</p>
+    </div>
+  </div>
+  </div>
+
+</div>
